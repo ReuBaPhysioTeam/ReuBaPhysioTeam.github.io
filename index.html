@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#E5F4FC"><link rel="manifest" href="manifest.webmanifest">
+<meta name="application-version" content="1.7.1">
+<title>ReuBa PHYSIOTEAM</title>
+<style>
+:root{--bg:#f3f5f2;--card:#fff;--ink:#17231e;--muted:#64736b;--green:#238653;--orange:#c77a18;--red:#c74747;--line:#dce4de}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px system-ui,-apple-system,sans-serif;padding:var(--safe-top) 14px env(safe-area-inset-bottom)}
+main{max-width:var(--content-width);margin:auto}.panel,.item{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:15px;margin:12px 0}.panel h2{font-size:18px;margin:0 0 12px}
+label{display:block;font-size:13px;color:var(--muted);margin:9px 0 4px}input,select,textarea{width:100%;padding:11px;border:1px solid #cbd6ce;border-radius:9px;background:white;font:inherit;color:var(--ink)}button{border:0;border-radius:10px;padding:11px 14px;background:#1e6c48;color:white;font:600 14px system-ui;cursor:pointer;margin:5px 5px 0 0}button.secondary{background:#e8eee9;color:#244333}button.danger{background:#a93636}.item{display:flex;justify-content:space-between;gap:10px;align-items:center}.item h3{margin:0 0 3px;font-size:16px}.sub{font-size:13px;color:var(--muted)}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}.green{background:var(--green)}.orange{background:var(--orange)}.red{background:var(--red)}.status{font-size:13px;font-weight:600}.tabs{display:flex;gap:6px;flex-wrap:wrap}.tabs button{flex:1;min-width:90px}.hidden{display:none}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:430px){.grid{grid-template-columns:1fr}}canvas{width:100%;height:220px;border:1px solid var(--line);border-radius:10px;background:#fff}small{color:var(--muted)}
+
+/* Version 1.5.1: ReuBa-inspired header and consistent accessible inputs */
+:root{
+  --bg:#f5fafd;--ink:#202b33;--muted:#4b5862;--line:#d2eaf8;
+  --safe-top:env(safe-area-inset-top,0px);
+  --content-width:760px;
+  --menu-right:max(12px,env(safe-area-inset-right),calc((100% - var(--content-width)) / 2 + 12px));
+}
+header h1{color:#07549a;font-family:Georgia,"Times New Roman",serif;font-size:clamp(28px,6vw,38px);line-height:1.2}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.grid>div{min-width:0}
+input,select,textarea{display:block;min-width:0;max-width:100%;font-size:18px;min-height:54px}
+
+/* Version 1.5.2: fixed accessible bottom navigation and matching page headings */
+body{padding-bottom:calc(100px + env(safe-area-inset-bottom));}
+.tabs{position:fixed;bottom:0;left:0;right:0;z-index:100;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;flex-wrap:nowrap;background:#d2eaf8;border-top:1px solid #a9cce2;padding:10px 8px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -3px 14px #07549a18;}
+.tabs button{min-width:0;min-height:56px;margin:0;padding:8px 3px;border-radius:10px;background:#07549a;color:#fff;font-size:clamp(12px,3vw,16px);line-height:1.15;overflow-wrap:anywhere;}
+.tabs button.secondary{background:#fff;color:#07549a;border:1px solid #a8c8de;}
+.section-heading{
+  --heading-fill:#E5F4FC;
+  position:relative;
+  isolation:isolate;
+  display:grid;
+  align-items:center;
+  min-height:96px;
+  margin:0 -14px 42px;
+  padding:16px max(76px,calc(env(safe-area-inset-right) + 64px)) 24px max(14px,env(safe-area-inset-left));
+  color:#07549A;
+  text-align:center;
+}
+.section-heading.hidden{display:none}
+.section-heading::before{
+  content:"";
+  position:absolute;
+  inset:calc(-1 * var(--safe-top)) 0 0;
+  z-index:-1;
+  border-radius:0 0 50% 50% / 0 0 26px 26px;
+  background:var(--heading-fill);
+}
+.heading-arcs{
+  position:absolute;
+  top:calc(100% - 24px);
+  left:0;
+  right:0;
+  height:60px;
+  overflow:hidden;
+  pointer-events:none;
+  mask-image:linear-gradient(transparent,#000 24%);
+}
+.heading-arcs::before,.heading-arcs::after,.heading-arcs span{
+  content:"";
+  position:absolute;
+  border:4px solid var(--heading-fill);
+  border-top:0;
+  border-radius:0 0 50% 50% / 0 0 100% 100%;
+}
+.heading-arcs::before{top:0;left:-4%;width:64%;height:51px}
+.heading-arcs span{top:3px;left:21%;width:60%;height:57px}
+.heading-arcs::after{top:0;left:48%;width:56%;height:40px}
+.section-heading h2{font-family:Georgia,"Times New Roman",serif;color:#07549a;font-size:clamp(28px,6vw,38px);line-height:1.2;margin:0;overflow-wrap:anywhere}
+@media(min-width:480px){.section-heading{padding-left:max(76px,env(safe-area-inset-left))}}
+@media(min-width:788px){.section-heading{max-width:var(--content-width);margin-inline:auto}}
+/* v1.5.3 accessibility, language menu and light-blue actions */
+body{font-size:18px}label{font-size:17px}button{font-size:17px;min-height:52px} .sub,.status{font-size:16px}
+#addExercise,#saveLog{background:#d2eaf8;color:#07549a;border:2px solid #9dc8e4;font-size:18px;font-weight:700;min-height:56px}
+#addExercise:focus-visible,#saveLog:focus-visible,.menu-toggle:focus-visible{outline:3px solid #07549a;outline-offset:3px}
+.menu-toggle{
+  position:absolute;
+  right:var(--menu-right);
+  top:calc(18px + var(--safe-top));
+  z-index:202;
+  display:grid;
+  place-content:center;
+  gap:4px;
+  width:52px;
+  height:52px;
+  margin:0;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:#07549A;
+}
+.menu-toggle span{justify-self:start;width:23px;height:3px;border-radius:2px;background:currentColor}
+.menu-toggle span:nth-child(2){width:18px}
+.menu-toggle span:nth-child(3){width:29px}
+.settings-menu{position:absolute;right:var(--menu-right);top:calc(76px + var(--safe-top));z-index:201;width:min(310px,calc(100vw - 24px));background:#fff;border:2px solid #a8c8de;border-radius:14px;padding:16px;box-shadow:0 8px 28px #07549a30}
+.settings-menu[hidden]{display:none!important}.settings-menu h2{font-size:22px;margin:0 0 12px;color:#07549a}.settings-menu label{font-size:18px}.settings-menu select{min-height:56px}
+/* v1.5.5: reference-inspired ReuBa branding, without tagline */
+.brand-heading{margin:0;line-height:1.15}
+.brand-heading a{display:inline-flex;max-width:100%;align-items:baseline;justify-content:center;flex-wrap:wrap;gap:clamp(7px,2vw,13px);text-decoration:none}
+.brand-reuba{font-family:Georgia,"Times New Roman",serif;font-size:clamp(35px,8vw,48px);font-weight:700;letter-spacing:-.025em;color:#07549a}
+.brand-physio{font-family:"Helvetica Neue",Arial,sans-serif;font-size:clamp(16px,3.9vw,23px);font-weight:300;letter-spacing:.035em;color:#111}
+
+.item h3{font-size:23px;font-weight:750;overflow-wrap:anywhere}
+.item>div:first-child{min-width:0}
+.item-actions{display:flex}
+.icon-button{display:inline-grid;place-items:center;vertical-align:middle;width:38px;min-height:38px;padding:0;margin:0;background:transparent;color:#07549a}
+.icon-button.remove-icon{color:#a93636}
+.icon-button svg{width:18px;height:18px}
+.metrics{font-size:20px;font-weight:650;margin-top:5px}
+.settings-menu{max-height:calc(100dvh - 88px - var(--safe-top));overflow:auto}
+.settings-link{display:flex;align-items:center;min-height:44px;color:#07549A;font-weight:600;text-underline-offset:3px}
+.settings-menu #export{margin-top:14px}
+.settings-menu #importFile{display:none}
+dialog{width:min(440px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:18px;border:1px solid #a8c8de;border-radius:14px;color:var(--ink)}
+dialog::backdrop{background:#10283c80}
+dialog h2{margin:0 0 12px;color:#07549a;overflow-wrap:anywhere}
+dialog p{white-space:pre-wrap;overflow-wrap:anywhere}
+dialog button{background:#07549a}
+.date-field{display:block;width:100%;min-height:54px;margin:0;padding:11px;border:1px solid #cbd6ce;border-radius:9px;background:white;color:var(--ink);font:inherit;text-align:left}
+.date-field:focus-visible{outline:3px solid #07549a;outline-offset:2px}
+.calendar-header{display:flex;justify-content:space-between;align-items:center;gap:4px;text-align:center}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));text-align:center;gap:2px;margin:10px 0}
+.calendar-grid button{padding:0;margin:0;min-height:38px;background:#f5fafd;color:#07549a}
+.calendar-grid button[aria-pressed="true"]{background:#07549a;color:white}
+.calendar-grid abbr{text-decoration:none;font-size:14px}
+.chart-weight-heading{margin:0 0 8px}
+.chart-range{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:12px 0 8px}
+.chart-range label{flex:none;margin:0;font-size:16px;white-space:nowrap}
+.chart-range select{width:auto;min-height:44px;padding-inline:8px;font-size:16px}
+.chart canvas{display:block;height:240px}
+.chart canvas[hidden]{display:none}
+.chart p{padding:24px;text-align:center;border:1px solid var(--line);border-radius:10px}
+</style></head>
+<body><button type="button" class="menu-toggle" id="menuToggle" aria-label="Einstellungen öffnen" aria-expanded="false" aria-controls="settingsMenu"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
+<aside class="settings-menu" id="settingsMenu" hidden><h2 data-i18n="settings">Einstellungen</h2><a class="settings-link" href="https://reservierung.reuba.de/physio/reservierung" data-i18n="reserveRoom">Geräteraum reservieren</a><label for="languageSelect" data-i18n="language">Sprache / Language</label><select id="languageSelect"><option value="de">Deutsch</option><option value="en">English</option></select><button class="secondary" id="export" data-i18n="export">Backup exportieren</button><button type="button" class="secondary" id="restore" data-i18n="import">Backup wiederherstellen (JSON)</button><input type="file" id="importFile" accept="application/json,.json" hidden></aside>
+<header id="appHeader" class="section-heading"><h1 class="brand-heading"><a href="https://www.reuba-physioteam.de/"><span class="brand-reuba">ReuBa</span><span class="brand-physio">PHYSIOTEAM</span></a></h1><div class="heading-arcs" aria-hidden="true"><span></span></div></header><main>
+<nav class="tabs" aria-label="Hauptnavigation"><button data-tab="status" data-i18n="overview">Übersicht</button><button data-tab="log" class="secondary" data-i18n="trainingNav">Training eintragen</button><button data-tab="charts" class="secondary" data-i18n="progressNav">Fortschritt</button><button data-tab="history" class="secondary" data-i18n="historyNav">Verlauf</button></nav>
+<section id="status" class="tab"><div class="panel"><h2 data-i18n="exercises">Geräte & Übungen</h2><div id="exerciseList"></div><label for="newExercise" data-i18n="newExercise">Neue Übung / neues Gerät</label><input id="newExercise" placeholder="z. B. Beinstrecker" data-i18n-placeholder="exercisePlaceholder"><button id="addExercise" data-i18n="addExercise">Übung hinzufügen</button></div></section>
+<section id="log" class="tab hidden"><div class="section-heading"><h2 data-i18n="saveTraining">Training speichern</h2><div class="heading-arcs" aria-hidden="true"><span></span></div></div><div class="panel"><label for="logExercise" data-i18n="exercise">Übung / Gerät</label><select id="logExercise"></select><div class="grid"><div><label for="logDate" data-i18n="date">Datum</label><button type="button" id="logDate" class="date-field" aria-haspopup="dialog" aria-controls="calendar"></button></div><div><label for="weight" data-i18n="weight">Gewicht (kg)</label><input type="number" id="weight" min="0" step="any" placeholder="z. B. 40" data-i18n-placeholder="weightPlaceholder"></div><div><label for="sets" data-i18n="sets">Sätze</label><input type="number" id="sets" min="1" value="3"></div><div><label for="reps" data-i18n="reps">Wiederholungen</label><input type="number" id="reps" min="1" value="10"></div></div><label for="notes" data-i18n="notes">Notiz (optional)</label><textarea id="notes" rows="2"></textarea><button id="saveLog" data-i18n="saveTraining">Training speichern</button></div></section>
+<section id="charts" class="tab hidden"><div class="section-heading"><h2 data-i18n="progress">Fortschritt</h2><div class="heading-arcs" aria-hidden="true"><span></span></div></div><div class="panel"><label for="chartExercise" data-i18n="chooseExercise">Übung auswählen</label><select id="chartExercise"></select><div class="chart-range"><label for="chartRange" data-i18n="period">Zeitraum</label><select id="chartRange"><option value="1" data-i18n="month">Letzter Monat</option><option value="3" data-i18n="months3">Letzte 3 Monate</option><option value="6" data-i18n="months6">Letzte 6 Monate</option><option value="all" data-i18n="all">Insgesamt</option></select></div><h3 class="chart-weight-heading" data-i18n="weight">Gewicht (kg)</h3><div class="chart"><canvas id="weightChart" role="img"></canvas><p id="weightChartEmpty" class="sub" hidden></p></div><h3 data-i18n="reps">Wiederholungen</h3><div class="chart"><canvas id="repsChart" role="img"></canvas><p id="repsChartEmpty" class="sub" hidden></p></div></div></section>
+<section id="history" class="tab hidden"><div class="section-heading"><h2 data-i18n="history">Trainingsverlauf</h2><div class="heading-arcs" aria-hidden="true"><span></span></div></div><div class="panel"><div id="historyList"></div></div></section>
+</main>
+<dialog id="noteDialog" aria-labelledby="noteTitle"><h2 id="noteTitle"></h2><form method="dialog" id="noteForm"><p id="noteText"></p><textarea id="exerciseNote" rows="4"></textarea><button value="save" id="saveNote" data-i18n="save">Speichern</button><button class="secondary" value="cancel" data-i18n="close">Schließen</button></form></dialog>
+<dialog id="editDialog" aria-labelledby="editTitle"><h2 id="editTitle" data-i18n="editWorkout">Training bearbeiten</h2><form id="editForm"><p id="editExercise"></p><div class="grid"><div><label for="editDate" data-i18n="date">Datum</label><button type="button" id="editDate" class="date-field" aria-haspopup="dialog" aria-controls="calendar"></button></div><div><label for="editWeight" data-i18n="weight">Gewicht (kg)</label><input type="number" id="editWeight" min="0" step="any"></div><div><label for="editSets" data-i18n="sets">Sätze</label><input type="number" id="editSets" min="1" required></div><div><label for="editReps" data-i18n="reps">Wiederholungen</label><input type="number" id="editReps" min="1" required></div></div><label for="editNotes" data-i18n="notes">Notiz (optional)</label><textarea id="editNotes" rows="2"></textarea><button data-i18n="save">Speichern</button><button type="button" class="secondary" id="cancelEdit" data-i18n="cancel">Abbrechen</button></form></dialog>
+<dialog id="calendar" aria-labelledby="calendarMonth"><div class="calendar-header"><button type="button" class="icon-button" id="previousMonth">‹</button><strong id="calendarMonth" aria-live="polite"></strong><button type="button" class="icon-button" id="nextMonth">›</button></div><div id="calendarGrid" class="calendar-grid"></div><form method="dialog"><button class="secondary" data-i18n="close">Schließen</button></form></dialog>
+<script src="app.js"></script></body></html>
