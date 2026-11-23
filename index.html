@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#E5F4FC"><link rel="manifest" href="manifest.webmanifest">
-<meta name="application-version" content="1.7.1">
+<meta name="application-version" content="1.8.15">
 <title>ReuBa PHYSIOTEAM</title>
 <style>
 :root{--bg:#f3f5f2;--card:#fff;--ink:#17231e;--muted:#64736b;--green:#238653;--orange:#c77a18;--red:#c74747;--line:#dce4de}
@@ -134,17 +134,164 @@ dialog button{background:#07549a}
 .chart canvas{display:block;height:240px}
 .chart canvas[hidden]{display:none}
 .chart p{padding:24px;text-align:center;border:1px solid var(--line);border-radius:10px}
+
+/* v1.8: progress goals, achievements and cautious progression */
+.motivation-panel h2{color:#07549a;margin-bottom:10px}
+.motivation-heading{display:flex;justify-content:space-between;gap:12px;align-items:start}
+.motivation-heading p{margin:2px 0 10px}
+.goal-control{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:4px 0 12px}
+.goal-control label{margin:0}
+.goal-control select{width:auto;min-width:94px;min-height:45px;padding:6px 10px}
+.goal-bar{height:13px;background:#e5edf3;border-radius:999px;overflow:hidden}
+.goal-fill{height:100%;width:0;background:#07549a;border-radius:999px;transition:width .2s ease}
+.goal-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:9px}
+.goal-meta p{margin:0}
+.goal-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:15px 0}
+.goal-stat{border:1px solid #c7e3f4;background:#f5fafd;border-radius:12px;padding:12px;text-align:center}
+.goal-stat strong{display:block;font-size:24px;color:#07549a;font-weight:750}
+.goal-stat span{font-size:14px;color:var(--muted)}
+.badges-title{font-size:18px;margin:14px 0 8px;color:#07549a}
+.badge-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.achievement{display:flex;align-items:center;gap:9px;border:1px solid #a9d5ec;border-radius:11px;padding:10px;background:#f5fafd;min-height:65px}
+.achievement.locked{border-color:#e0e6e9;background:#f9fbfc;opacity:.64}
+.achievement-icon{font-size:25px;flex:none}
+.achievement strong{display:block;color:#07549a;font-size:14px;line-height:1.3}
+.achievement small{font-size:12px}
+.progress-hint{background:#eef7fc;border-left:4px solid #07549a;border-radius:8px;padding:12px;margin:13px 0 4px}
+.progress-hint strong{display:block;color:#07549a;margin-bottom:4px}
+.progress-hint p{font-size:15px;line-height:1.45;margin:4px 0}
+.progress-hint[hidden]{display:none}
+.check-field{display:flex;align-items:start;gap:10px;margin:12px 0;color:var(--ink);font-size:16px;line-height:1.45}
+.check-field input{margin:3px 0 0;width:21px;min-width:21px;height:21px;min-height:21px;accent-color:#07549a}
+.field-note{font-size:14px;line-height:1.45;color:var(--muted);margin:6px 0 9px}
+.effort-tag{display:inline-block;font-size:13px;font-weight:650;background:#eef7fc;color:#07549a;padding:3px 7px;margin-top:7px;border-radius:7px}
+.icon-button.settings-icon{color:#07549a}
+@media(max-width:410px){.badge-grid{grid-template-columns:1fr}.item-actions{gap:0}.icon-button{width:35px}.goal-stats{gap:7px}}
+
+/* v1.8.1–1.8.4: compact milestones; match heading spacing across all tabs */
+#appHeader{margin-bottom:42px}
+.motivation-panel{padding:11px 12px;margin-top:7px;margin-bottom:8px}
+.motivation-panel h2{font-size:18px;margin:0;line-height:1.2}
+.motivation-heading{align-items:center;gap:6px}
+.motivation-heading p{font-size:12px;line-height:1.3;margin:2px 0 0}
+.motivation-heading > span{font-size:22px!important}
+.goal-control{margin:7px 0 7px;gap:6px}
+.goal-control label{font-size:14px}
+.goal-control select{min-height:38px;min-width:66px;max-width:86px;padding:4px 7px;font-size:15px}
+.goal-bar{height:9px}
+.goal-meta{margin-top:5px;gap:6px}
+.goal-meta .sub{font-size:12px;line-height:1.3}
+.goal-stats{gap:7px;margin:9px 0}
+.goal-stat{padding:6px 5px;border-radius:9px}
+.goal-stat strong{font-size:20px;line-height:1.1}
+.goal-stat span{display:block;font-size:12px;line-height:1.2;margin-top:2px}
+.badges-title{font-size:16px;margin:6px 0 5px}
+.badge-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.badge-track{display:flex;flex-direction:column;gap:5px;min-width:0}
+.badge-track-title{margin:0 0 1px;color:#07549a;font-size:13px;font-weight:750;line-height:1.2}
+.achievement{padding:6px;min-height:46px;gap:6px;border-radius:9px;align-items:center}
+.achievement-icon{font-size:19px}
+.achievement > div{min-width:0}
+.achievement strong{font-size:12px;line-height:1.18;overflow-wrap:anywhere}
+.achievement small{display:block;font-size:11px;line-height:1.15;margin-top:3px}
+@media(max-width:410px){.badge-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:360px){.achievement{padding:5px 4px;gap:4px}.achievement strong{font-size:11px}.achievement-icon{font-size:17px}.goal-stat span{font-size:11px}.item{gap:4px;padding:10px}.item h3{font-size:19px}.item .icon-button{width:30px;min-height:36px}.item-actions{flex-shrink:0}}
+/* v1.8.2: equal-size, compact achievement cards on both tracks */
+.badge-track{display:grid;grid-template-rows:auto repeat(2, 68px);gap:5px;align-content:start}
+.achievement{height:68px;min-height:0;width:100%;padding:5px 6px;gap:5px;overflow:hidden}
+.achievement > div{min-width:0;flex:1;text-align:center}
+.achievement strong{font-size:11px;line-height:1.15;overflow-wrap:anywhere;hyphens:auto}
+.achievement small{font-size:10px;line-height:1.15;margin-top:2px}
+.achievement-icon{font-size:18px;line-height:1;flex:0 0 20px;text-align:center}
+@media(max-width:360px){
+  .achievement{padding:4px 3px;gap:3px}
+  .achievement strong{font-size:10px}
+  .achievement-icon{font-size:16px;flex-basis:18px}
+}
+
+
+/* v1.8.10: overview title layout and progression icon refresh */
+#exerciseList .item{align-items:flex-start}
+#exerciseList .item-main{min-width:0;flex:1}
+#exerciseList .exercise-heading{display:flex;align-items:flex-start;gap:8px;margin:0 0 4px;font-size:23px;font-weight:750;line-height:1.25}
+#exerciseList .exercise-heading .dot{flex:0 0 9px;margin-right:0;margin-top:.42em}
+#exerciseList .exercise-name{display:block;min-width:0;flex:1;word-break:normal;overflow-wrap:anywhere;hyphens:auto}
+#exerciseList .title-tail{display:inline-flex;align-items:center;white-space:nowrap;vertical-align:baseline;max-width:100%}
+#exerciseList .title-buttons{display:inline-flex;align-items:center;white-space:nowrap;vertical-align:middle;margin-left:5px;flex-shrink:0}
+#exerciseList .title-buttons .icon-button,
+#exerciseList .title-buttons .advice-arrow{flex:none}
+#exerciseList .item-actions{display:flex;align-items:flex-start;padding-top:2px;flex-shrink:0}
+#exerciseList .item-actions .icon-button svg{width:19px;height:19px}
+@media(max-width:360px){
+  #exerciseList .exercise-heading{font-size:21px;gap:7px}
+  #exerciseList .exercise-heading .dot{margin-top:.4em}
+  #exerciseList .title-tail{gap:2px}
+}
+
+
+/* v1.8.13: Give the name an actual bounded column, separate from the actions. */
+#exerciseList .item{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) max-content;
+  column-gap:8px;
+  align-items:start;
+}
+#exerciseList .item-main{min-width:0;width:100%;max-width:100%}
+#exerciseList .exercise-heading{
+  display:grid;
+  grid-template-columns:9px minmax(0,1fr);
+  column-gap:8px;
+  align-items:start;
+  min-width:0;
+}
+#exerciseList .exercise-heading .dot{margin:0;margin-top:.52em}
+#exerciseList .exercise-name{
+  display:block;
+  min-width:0;
+  width:100%;
+  max-width:100%;
+  overflow-wrap:anywhere;
+  hyphens:auto;
+}
+#exerciseList .name-chunk{white-space:nowrap;display:inline}
+#exerciseList .title-tail{
+  display:inline-flex;
+  align-items:center;
+  white-space:nowrap;
+  max-width:100%;
+  vertical-align:middle;
+}
+#exerciseList .item-actions{justify-self:end;white-space:nowrap;min-width:0}
+@media(max-width:360px){
+  #exerciseList .item{column-gap:5px}
+  #exerciseList .exercise-heading{column-gap:6px}
+}
+
+/* v1.8.3: feedback validation, recommendation popups and navigation reset */
+select.effort-invalid{border:2px solid #cf3030!important;box-shadow:0 0 0 3px #d22c2c22;background:#fff5f5}
+.validation-message{font-size:14px;color:#ad2222;margin:5px 0 8px;line-height:1.3}
+.validation-message[hidden]{display:none}
+.recommendation-dialog{border:2px solid #9ecfe8;box-shadow:0 16px 65px #07549a3d;text-align:center;padding:25px 20px;background:linear-gradient(150deg,#fff,#eef8ff 90%)}
+.recommendation-dialog[data-kind="reduce"]{background:linear-gradient(150deg,#fff,#fff5f2 90%);border-color:#e7b2a6}
+.recommendation-dialog .celebration-mark{font-size:38px;margin:0 auto 10px}
+.recommendation-dialog h2{font-size:23px;margin:0 0 10px}
+.recommendation-dialog p{line-height:1.55;font-size:16px;margin:0 0 16px}
+.recommendation-dialog button{margin:4px 0 0;min-width:140px}
+.advice-arrow{display:inline-grid;place-items:center;width:34px;min-height:36px;margin:0 0 0 4px;padding:0;vertical-align:middle;background:transparent;border:0;border-radius:8px}
+.advice-arrow.up{color:#1b9651}.advice-arrow.down{color:#c63d36}
+.advice-arrow svg{width:26px;height:26px;stroke-width:3.3}
+.advice-arrow:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 </style></head>
 <body><button type="button" class="menu-toggle" id="menuToggle" aria-label="Einstellungen öffnen" aria-expanded="false" aria-controls="settingsMenu"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
 <aside class="settings-menu" id="settingsMenu" hidden><h2 data-i18n="settings">Einstellungen</h2><a class="settings-link" href="https://reservierung.reuba.de/physio/reservierung" data-i18n="reserveRoom">Geräteraum reservieren</a><label for="languageSelect" data-i18n="language">Sprache / Language</label><select id="languageSelect"><option value="de">Deutsch</option><option value="en">English</option></select><button class="secondary" id="export" data-i18n="export">Backup exportieren</button><button type="button" class="secondary" id="restore" data-i18n="import">Backup wiederherstellen (JSON)</button><input type="file" id="importFile" accept="application/json,.json" hidden></aside>
 <header id="appHeader" class="section-heading"><h1 class="brand-heading"><a href="https://www.reuba-physioteam.de/"><span class="brand-reuba">ReuBa</span><span class="brand-physio">PHYSIOTEAM</span></a></h1><div class="heading-arcs" aria-hidden="true"><span></span></div></header><main>
 <nav class="tabs" aria-label="Hauptnavigation"><button data-tab="status" data-i18n="overview">Übersicht</button><button data-tab="log" class="secondary" data-i18n="trainingNav">Training eintragen</button><button data-tab="charts" class="secondary" data-i18n="progressNav">Fortschritt</button><button data-tab="history" class="secondary" data-i18n="historyNav">Verlauf</button></nav>
-<section id="status" class="tab"><div class="panel"><h2 data-i18n="exercises">Geräte & Übungen</h2><div id="exerciseList"></div><label for="newExercise" data-i18n="newExercise">Neue Übung / neues Gerät</label><input id="newExercise" placeholder="z. B. Beinstrecker" data-i18n-placeholder="exercisePlaceholder"><button id="addExercise" data-i18n="addExercise">Übung hinzufügen</button></div></section>
-<section id="log" class="tab hidden"><div class="section-heading"><h2 data-i18n="saveTraining">Training speichern</h2><div class="heading-arcs" aria-hidden="true"><span></span></div></div><div class="panel"><label for="logExercise" data-i18n="exercise">Übung / Gerät</label><select id="logExercise"></select><div class="grid"><div><label for="logDate" data-i18n="date">Datum</label><button type="button" id="logDate" class="date-field" aria-haspopup="dialog" aria-controls="calendar"></button></div><div><label for="weight" data-i18n="weight">Gewicht (kg)</label><input type="number" id="weight" min="0" step="any" placeholder="z. B. 40" data-i18n-placeholder="weightPlaceholder"></div><div><label for="sets" data-i18n="sets">Sätze</label><input type="number" id="sets" min="1" value="3"></div><div><label for="reps" data-i18n="reps">Wiederholungen</label><input type="number" id="reps" min="1" value="10"></div></div><label for="notes" data-i18n="notes">Notiz (optional)</label><textarea id="notes" rows="2"></textarea><button id="saveLog" data-i18n="saveTraining">Training speichern</button></div></section>
-<section id="charts" class="tab hidden"><div class="section-heading"><h2 data-i18n="progress">Fortschritt</h2><div class="heading-arcs" aria-hidden="true"><span></span></div></div><div class="panel"><label for="chartExercise" data-i18n="chooseExercise">Übung auswählen</label><select id="chartExercise"></select><div class="chart-range"><label for="chartRange" data-i18n="period">Zeitraum</label><select id="chartRange"><option value="1" data-i18n="month">Letzter Monat</option><option value="3" data-i18n="months3">Letzte 3 Monate</option><option value="6" data-i18n="months6">Letzte 6 Monate</option><option value="all" data-i18n="all">Insgesamt</option></select></div><h3 class="chart-weight-heading" data-i18n="weight">Gewicht (kg)</h3><div class="chart"><canvas id="weightChart" role="img"></canvas><p id="weightChartEmpty" class="sub" hidden></p></div><h3 data-i18n="reps">Wiederholungen</h3><div class="chart"><canvas id="repsChart" role="img"></canvas><p id="repsChartEmpty" class="sub" hidden></p></div></div></section>
+<section id="status" class="tab"><div class="panel motivation-panel"><div class="motivation-heading"><div><h2 data-i18n="yourWeek">Deine Trainingswoche</h2><p class="sub" id="goalIntro" data-i18n="goalsIntro">Jede Trainingseinheit zählt!</p></div><span aria-hidden="true" style="font-size:29px">🏆</span></div><div class="goal-control"><label for="weeklyGoal" data-i18n="weeklyGoal">Mein Wochenziel</label><select id="weeklyGoal" aria-label="Trainingsziel pro Woche"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option></select></div><div class="goal-bar" role="progressbar" id="goalProgress" aria-valuemin="0" aria-valuemax="2" aria-valuenow="0"><div id="goalFill" class="goal-fill"></div></div><div class="goal-meta"><p id="goalSummary" class="sub" aria-live="polite"></p><span id="goalPercent" class="sub"></span></div><div class="goal-stats"><div class="goal-stat"><strong id="trainingDays">0</strong><span data-i18n="totalSessions">Trainingstage insgesamt</span></div><div class="goal-stat"><strong id="weekStreak">0</strong><span data-i18n="weeksInRow">Zielwochen in Folge</span></div></div><h3 class="badges-title" data-i18n="achievements">Deine Abzeichen</h3><div id="achievementList" class="badge-grid"></div></div><div class="panel"><h2 data-i18n="exercises">Geräte & Übungen</h2><div id="exerciseList"></div><label for="newExercise" data-i18n="newExercise">Neue Übung / neues Gerät</label><input id="newExercise" placeholder="z. B. Beinstrecker" data-i18n-placeholder="exercisePlaceholder"><button id="addExercise" data-i18n="addExercise">Übung hinzufügen</button></div></section>
+<section id="log" class="tab hidden"><div class="section-heading"><h2 data-i18n="saveTraining">Training speichern</h2><div class="heading-arcs" aria-hidden="true"><span></span></div></div><div class="panel"><label for="logExercise" data-i18n="exercise">Übung / Gerät</label><select id="logExercise"></select><div class="grid"><div><label for="logDate" data-i18n="date">Datum</label><button type="button" id="logDate" class="date-field" aria-haspopup="dialog" aria-controls="calendar"></button></div><div><label for="weight" data-i18n="weight">Gewicht (kg)</label><input type="number" id="weight" min="0" step="any" placeholder="z. B. 40" data-i18n-placeholder="weightPlaceholder"></div><div><label for="sets" data-i18n="sets">Sätze</label><input type="number" id="sets" min="1" value="3"></div><div><label for="reps" data-i18n="reps">Wiederholungen</label><input type="number" id="reps" min="1" value="10"></div></div><label for="effort" data-i18n="effortLabel">Wie war die Belastung?</label><select id="effort" required aria-describedby="effortError"><option value="" data-i18n="effortNone" disabled hidden>Keine Angabe</option><option value="easy" data-i18n="effortEasy">Leicht</option><option value="right" data-i18n="effortRight">Passend</option><option value="hard" data-i18n="effortHard">Zu schwer</option></select><p class="validation-message" id="effortError" data-i18n="effortRequired" hidden>Bitte gib an, wie sich die Belastung angefühlt hat.</p><label class="check-field" for="techniqueOk"><input type="checkbox" id="techniqueOk"><span data-i18n="controlledLabel">Kontrolliert ausgeführt</span></label><label class="check-field" for="painFree"><input type="checkbox" id="painFree"><span data-i18n="painFreeLabel">Ohne Schmerzen ausgeführt</span></label><label for="notes" data-i18n="notes">Notiz (optional)</label><textarea id="notes" rows="2"></textarea><button id="saveLog" data-i18n="saveTraining">Training speichern</button></div></section>
+<section id="charts" class="tab hidden"><div class="section-heading"><h2 data-i18n="progress">Fortschritt</h2><div class="heading-arcs" aria-hidden="true"><span></span></div></div><div class="panel"><label for="chartExercise" data-i18n="chooseExercise">Übung auswählen</label><select id="chartExercise"></select><div class="chart-range"><label for="chartRange" data-i18n="period">Zeitraum</label><select id="chartRange"><option value="1" data-i18n="month">Letzter Monat</option><option value="3" data-i18n="months3">Letzte 3 Monate</option><option value="6" data-i18n="months6">Letzte 6 Monate</option><option value="all" data-i18n="all">Insgesamt</option></select></div><h3 class="chart-weight-heading" data-i18n="weight">Gewicht (kg)</h3><div class="chart"><canvas id="weightChart" role="img"></canvas><p id="weightChartEmpty" class="sub" hidden></p></div></div></section>
 <section id="history" class="tab hidden"><div class="section-heading"><h2 data-i18n="history">Trainingsverlauf</h2><div class="heading-arcs" aria-hidden="true"><span></span></div></div><div class="panel"><div id="historyList"></div></div></section>
 </main>
 <dialog id="noteDialog" aria-labelledby="noteTitle"><h2 id="noteTitle"></h2><form method="dialog" id="noteForm"><p id="noteText"></p><textarea id="exerciseNote" rows="4"></textarea><button value="save" id="saveNote" data-i18n="save">Speichern</button><button class="secondary" value="cancel" data-i18n="close">Schließen</button></form></dialog>
-<dialog id="editDialog" aria-labelledby="editTitle"><h2 id="editTitle" data-i18n="editWorkout">Training bearbeiten</h2><form id="editForm"><p id="editExercise"></p><div class="grid"><div><label for="editDate" data-i18n="date">Datum</label><button type="button" id="editDate" class="date-field" aria-haspopup="dialog" aria-controls="calendar"></button></div><div><label for="editWeight" data-i18n="weight">Gewicht (kg)</label><input type="number" id="editWeight" min="0" step="any"></div><div><label for="editSets" data-i18n="sets">Sätze</label><input type="number" id="editSets" min="1" required></div><div><label for="editReps" data-i18n="reps">Wiederholungen</label><input type="number" id="editReps" min="1" required></div></div><label for="editNotes" data-i18n="notes">Notiz (optional)</label><textarea id="editNotes" rows="2"></textarea><button data-i18n="save">Speichern</button><button type="button" class="secondary" id="cancelEdit" data-i18n="cancel">Abbrechen</button></form></dialog>
-<dialog id="calendar" aria-labelledby="calendarMonth"><div class="calendar-header"><button type="button" class="icon-button" id="previousMonth">‹</button><strong id="calendarMonth" aria-live="polite"></strong><button type="button" class="icon-button" id="nextMonth">›</button></div><div id="calendarGrid" class="calendar-grid"></div><form method="dialog"><button class="secondary" data-i18n="close">Schließen</button></form></dialog>
+<dialog id="editDialog" aria-labelledby="editTitle"><h2 id="editTitle" data-i18n="editWorkout">Training bearbeiten</h2><form id="editForm"><p id="editExercise"></p><div class="grid"><div><label for="editDate" data-i18n="date">Datum</label><button type="button" id="editDate" class="date-field" aria-haspopup="dialog" aria-controls="calendar"></button></div><div><label for="editWeight" data-i18n="weight">Gewicht (kg)</label><input type="number" id="editWeight" min="0" step="any"></div><div><label for="editSets" data-i18n="sets">Sätze</label><input type="number" id="editSets" min="1" required></div><div><label for="editReps" data-i18n="reps">Wiederholungen</label><input type="number" id="editReps" min="1" required></div></div><label for="editEffort" data-i18n="effortLabel">Wie war die Belastung?</label><select id="editEffort" required aria-describedby="editEffortError"><option value="" data-i18n="effortNone" disabled hidden>Keine Angabe</option><option value="easy" data-i18n="effortEasy">Leicht</option><option value="right" data-i18n="effortRight">Passend</option><option value="hard" data-i18n="effortHard">Zu schwer</option></select><p class="validation-message" id="editEffortError" data-i18n="effortRequired" hidden>Bitte gib an, wie sich die Belastung angefühlt hat.</p><label class="check-field" for="editTechniqueOk"><input type="checkbox" id="editTechniqueOk"><span data-i18n="controlledLabel">Kontrolliert ausgeführt</span></label><label class="check-field" for="editPainFree"><input type="checkbox" id="editPainFree"><span data-i18n="painFreeLabel">Ohne Schmerzen ausgeführt</span></label><label for="editNotes" data-i18n="notes">Notiz (optional)</label><textarea id="editNotes" rows="2"></textarea><button data-i18n="save">Speichern</button><button type="button" class="secondary" id="cancelEdit" data-i18n="cancel">Abbrechen</button></form></dialog>
+<dialog id="progressDialog" aria-labelledby="progressDialogTitle"><h2 id="progressDialogTitle"></h2><form id="progressForm"><label for="increaseReps" data-i18n="increaseReps">Mehr Wiederholungen pro Satz</label><input id="increaseReps" type="number" min="1" max="30" step="1" required><label for="increaseKg" data-i18n="increaseKg">Gewichtsschritt (kg)</label><input type="number" id="increaseKg" min="0.5" max="100" step="0.5" required><label class="check-field" for="allowProgression"><input id="allowProgression" type="checkbox"><span data-i18n="allowProgression">Steigerungsvorschläge erlauben</span></label><p class="field-note" data-i18n="therapyExplain">Bei therapeutischen Belastungsgrenzen deaktivieren. Keine Steigerung bei Schmerzen oder unsicherer Technik.</p><button type="submit" data-i18n="save">Speichern</button><button type="button" id="cancelProgress" class="secondary" data-i18n="cancel">Abbrechen</button></form></dialog><dialog id="recommendationDialog" class="recommendation-dialog" aria-labelledby="recommendationTitle"><div class="celebration-mark" id="recommendationIcon" aria-hidden="true">🎉</div><h2 id="recommendationTitle"></h2><p id="recommendationText"></p><form method="dialog"><button type="submit" data-i18n="close">Schließen</button></form></dialog><dialog id="calendar" aria-labelledby="calendarMonth"><div class="calendar-header"><button type="button" class="icon-button" id="previousMonth">‹</button><strong id="calendarMonth" aria-live="polite"></strong><button type="button" class="icon-button" id="nextMonth">›</button></div><div id="calendarGrid" class="calendar-grid"></div><form method="dialog"><button class="secondary" data-i18n="close">Schließen</button></form></dialog>
 <script src="app.js"></script></body></html>
