@@ -1,4 +1,4 @@
-const CACHE = 'krafttraining-v1815-local-save';
+const CACHE = 'krafttraining-v1816-ios-indicators';
 const APP_SHELL = ['./index.html', './app.js', './manifest.webmanifest'];
 
 self.addEventListener('install', event => {

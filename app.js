@@ -535,14 +535,15 @@ function render() {
     const [color, description] = status(days);
     const hasNote = Boolean(exerciseNotes.get(ex)?.trim());
     const attr = `data-exercise="${escapeHTML(ex)}"`;
-    const trailingIcons = [
-      arrowButton(ex, recommendationFor(ex)),
-      hasNote ? iconButton('info', tr('showNote'), attr + ' data-action="show"') : ''
-    ].filter(Boolean).join('');
-    const nameMarkup = trailingIcons
-      ? `<span class="exercise-name-content">${escapeHTML(ex)}</span><span class="title-buttons">${trailingIcons}</span>`
+    // Recommendation arrows have their own layout slot so the name-wrapping
+    // routine cannot hide or displace them on iOS Safari/WebKit.
+    const advice = recommendationFor(ex);
+    const adviceMarkup = advice ? `<span class="advice-slot">${arrowButton(ex, advice)}</span>` : '';
+    const noteMarkup = hasNote ? iconButton('info', tr('showNote'), attr + ' data-action="show"') : '';
+    const nameMarkup = noteMarkup
+      ? `<span class="exercise-name-content">${escapeHTML(ex)}</span><span class="title-buttons">${noteMarkup}</span>`
       : escapeHTML(ex);
-    return `<div class="item"><div class="item-main"><h3 class="exercise-heading"><span class="dot ${color}"></span><span class="exercise-name" data-full-name="${escapeHTML(ex)}">${nameMarkup}</span></h3><div class="status">${description}</div></div><div class="item-actions">${iconButton('pencil', tr(hasNote ? 'editNote' : 'addNote'), attr + ' data-action="note"')}${iconButton('trendUp', tr('editProgress'), attr + ' data-action="progress"')}${iconButton('trash', tr('remove'), attr + ' data-action="remove"')}</div></div>`;
+    return `<div class="item"><div class="item-main"><h3 class="exercise-heading"><span class="dot ${color}"></span><span class="exercise-name" data-full-name="${escapeHTML(ex)}">${nameMarkup}</span>${adviceMarkup}</h3><div class="status">${description}</div></div><div class="item-actions">${iconButton('pencil', tr(hasNote ? 'editNote' : 'addNote'), attr + ' data-action="note"')}${iconButton('trendUp', tr('editProgress'), attr + ' data-action="progress"')}${iconButton('trash', tr('remove'), attr + ' data-action="remove"')}</div></div>`;
   }).join('') || `<p class="sub">${tr('emptyExercises')}</p>`;
   layoutExerciseHeadings();
   for (const [id, options] of [['logExercise', custom], ['chartExercise', [...new Set([...custom, ...dates.keys()])]]]) {
@@ -958,6 +959,11 @@ for (const button of tabs) {
 applyLanguage();
 setDate('logDate', today());
 prefill();
+// Safari may restore a frozen page from its back-forward cache without running
+// initial scripts. Refresh the indicators and layout when it comes back.
+window.addEventListener('pageshow', event => {
+  if (event.persisted) render();
+});
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js', {updateViaCache:'none'})
     .then(registration => registration.update()).catch(() => {});
